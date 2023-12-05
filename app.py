@@ -9,14 +9,16 @@ from director_analysis import fig1, fig2, fig3, fig4
 from genre_analysis import genre_fig1, genre_fig2, genre_fig3
 # from certificate_analysis import cert_fig1
 
+## Loading Bootstrap Template "SLATE"
 TEMPLATES = 'slate'
 load_template(TEMPLATES)
 
-# Dash APP
+### Dash APP
 
 ## Initialilzing Dash APP here
 app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE], title='Content Analysis Dashboard')
 
+## Code for Tab 1: Director
 tab1 = dbc.Card(
         dbc.CardBody([
             html.P('Analysis Based on Directorship.', className='card-text'),
@@ -105,8 +107,8 @@ tab1 = dbc.Card(
         ]),
         className='tab1',
 )
-## Tab 2: Certificate Tab
 
+## Code for Tab 2: Certificate Tab
 # tab2 = dbc.Card(
 #     dbc.CardBody([
 #         html.P('This is Content here for Certificate.', className='card-text'),
@@ -133,6 +135,8 @@ tab1 = dbc.Card(
 #     ]),
 #     className='tab2'
 # )
+
+## Code for Tab 3: Genre
 tab3 = dbc.Card(
     dbc.CardBody([
         html.P('This is Content here Genre.', className='card-text'),
@@ -182,6 +186,7 @@ app.layout = html.Div([
 ],  style={"backgroundColor": "rgb(44, 48, 54)"}  # Set dark gray background color
 )
 
+## Callback for Tab 1: Director
 @callback(
     [Output('table_des', 'children'), Output('output', 'data'), Output('output', 'columns')],
     Input('Director_Figure1', 'hoverData'),
@@ -190,7 +195,7 @@ app.layout = html.Div([
     Input('Director_Figure4', 'hoverData')
 )
 def update_output_director(value, value2, value3, value4):
-    '''Callback Ouput'''
+    '''Callback Update for Director'''
     if ctx.triggered:
         trigger = ctx.triggered[0]['prop_id'].split('.')[0]
         if trigger == 'Director_Figure1':
@@ -206,19 +211,17 @@ def update_output_director(value, value2, value3, value4):
 
                 description = 'Saturation of Directors in different Ratings'
                 return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-            else:
-                dt = df.head(20)
-                dt = dt[['Title', 'Director']]
-                for i in dt.index:
-                    if dt.Director.loc[i] == 'Not Available':
-                        continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+            dt = df.head(20)
+            dt = dt[['Title', 'Director']]
+            for i in dt.index:
+                if dt.Director.loc[i] == 'Not Available':
+                    continue
+                a = dt.Director.loc[i]
+                dt.at[i, 'Director'] = ','.join(a)
 
-                description = "Hover on any Field to update Table."
-                return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-        elif trigger == 'Director_Figure2':
+            description = "Hover on any Field to update Table."
+            return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
+        if trigger == 'Director_Figure2':
             if value2 is not None:
                 platform = value2['points'][0]['label']
                 dt = df.loc[df.Platform == platform]
@@ -226,24 +229,21 @@ def update_output_director(value, value2, value3, value4):
                 for i in dt.index:
                     if dt.Director.loc[i] == 'Not Available':
                         continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+                    a = dt.Director.loc[i]
+                    dt.at[i, 'Director'] = ','.join(a)
                 description = 'Distribution of Directions in different Platforms'
                 return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-            else:
-                dt = df.head(20)
-                dt = dt[['Title', 'Director']]
-                for i in dt.index:
-                    if dt.Director.loc[i] == 'Not Available':
-                        continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+            dt = df.head(20)
+            dt = dt[['Title', 'Director']]
+            for i in dt.index:
+                if dt.Director.loc[i] == 'Not Available':
+                    continue
+                a = dt.Director.loc[i]
+                dt.at[i, 'Director'] = ','.join(a)
 
-                description = "Hover on any Field to update Table."
-                return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-        elif trigger == 'Director_Figure3':
+            description = "Hover on any Field to update Table."
+            return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
+        if trigger == 'Director_Figure3':
             if value3 is not None:
                 director = value3['points'][0]['x']
                 dt = df.loc[df.Director.apply(lambda x: director in x)]
@@ -251,25 +251,22 @@ def update_output_director(value, value2, value3, value4):
                 for i in dt.index:
                     if dt.Director.loc[i] == 'Not Available':
                         continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+                    a = dt.Director.loc[i]
+                    dt.at[i, 'Director'] = ','.join(a)
 
                 description = "Top 10 Most Active Directors."
                 return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-            else:
-                dt = df.head(20)
-                dt = dt[['Title', 'Director']]
-                for i in dt.index:
-                    if dt.Director.loc[i] == 'Not Available':
-                        continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+            dt = df.head(20)
+            dt = dt[['Title', 'Director']]
+            for i in dt.index:
+                if dt.Director.loc[i] == 'Not Available':
+                    continue
+                a = dt.Director.loc[i]
+                dt.at[i, 'Director'] = ','.join(a)
 
-                description = "Hover on any Field to update Table."
-                return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-        elif trigger == 'Director_Figure4':
+            description = "Hover on any Field to update Table."
+            return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
+        if trigger == 'Director_Figure4':
             if value4 is not None:
                 director = value4['points'][0]['x']
                 dt = df.loc[df.Director.apply(lambda x: director in x)]
@@ -277,39 +274,34 @@ def update_output_director(value, value2, value3, value4):
                 for i in dt.index:
                     if dt.Director.loc[i] == 'Not Available':
                         continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+                    a = dt.Director.loc[i]
+                    dt.at[i, 'Director'] = ','.join(a)
 
                 description = "Movie Ratings by Genre and Director."
                 return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
-            else:
-                dt = df.head(20)
-                dt = dt[['Title', 'Director']]
-                for i in dt.index:
-                    if dt.Director.loc[i] == 'Not Available':
-                        continue
-                    else:
-                        a = dt.Director.loc[i]
-                        dt.at[i, 'Director'] = ','.join(a)
+            dt = df.head(20)
+            dt = dt[['Title', 'Director']]
+            for i in dt.index:
+                if dt.Director.loc[i] == 'Not Available':
+                    continue
+                a = dt.Director.loc[i]
+                dt.at[i, 'Director'] = ','.join(a)
 
-                description = "Hover on any Field to update Table."
-                return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
+            description = "Hover on any Field to update Table."
+            return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
     else:
         dt = df.head(20)
         dt = dt[['Title', 'Director']]
         for i in dt.index:
             if dt.Director.loc[i] == 'Not Available':
                 continue
-            else:
-                a = dt.Director.loc[i]
-                dt.at[i, 'Director'] = ','.join(a)
+            a = dt.Director.loc[i]
+            dt.at[i, 'Director'] = ','.join(a)
 
         description = "Hover on any Field to update Table."
         return description, dt.to_dict('records'), [{'id':c, 'name': c} for c in dt.columns]
 
-## Callback for Certificate Tab
-
+## Callback for Tab 2: Certificate
 # @callback(
 #     Output('cert_fig2', 'figure'),
 #     Input('dropdown', 'value')
@@ -317,6 +309,7 @@ def update_output_director(value, value2, value3, value4):
 # def update_output(value):
 #     print(value)
 
+## Callback for Tab 3: Genre
 @callback(
     Output('genre_figUpdate', 'figure'),
     Input('genre_fig2', 'hoverData'),
@@ -366,29 +359,27 @@ def update_output_genre(value,value2):
                                 textinfo='label+percent',
                                 title_font = dict(size=20))
                 return fig
-            else:
-                fig = go.Figure(
-                    data = [
-                        go.Pie()
-                    ]
-                )
-                fig.update_layout(
-                    title = 'Hover on Adjacent Graphs to Update'
-                )
-                return fig
+            fig = go.Figure(
+                data = [
+                    go.Pie()
+                ]
+            )
+            fig.update_layout(
+                title = 'Hover on Adjacent Graphs to Update'
+            )
+            return fig
 
-        elif trigger == 'genre_fig3':
+        if trigger == 'genre_fig3':
             if value2 is not None:
                 filtered_df = pd.DataFrame(columns=['Genre', 'Platform'])
                 for i in df.index:
                     if df.Genre.loc[i] == 'Not Available':
                         continue
-                    else:
-                        a = df.Genre.loc[i]
-                        a = ','.join(a)
-                        temp = value2['points'][0]['x']
-                        if a == temp.replace(' ',''):
-                            filtered_df.loc[len(filtered_df.index)] = [df.Genre.loc[i], df.Platform.loc[i]] # pylint: disable=line-too-long
+                    a = df.Genre.loc[i]
+                    a = ','.join(a)
+                    temp = value2['points'][0]['x']
+                    if a == temp.replace(' ',''):
+                        filtered_df.loc[len(filtered_df.index)] = [df.Genre.loc[i], df.Platform.loc[i]] # pylint: disable=line-too-long
 
                 a = filtered_df.groupby(['Platform']).size().reset_index(name='count')
                 a = a.sort_values(by='count', ascending=False)
@@ -416,16 +407,15 @@ def update_output_genre(value,value2):
                                 title_font = dict(size=20)
                                 )
                 return fig
-            else:
-                fig = go.Figure(
-                    data = [
-                        go.Pie()
-                    ]
-                )
-                fig.update_layout(
-                    title = 'Hover on Adjacent Graphs to Update'
-                )
-                return fig
+            fig = go.Figure(
+                data = [
+                    go.Pie()
+                ]
+            )
+            fig.update_layout(
+                title = 'Hover on Adjacent Graphs to Update'
+            )
+            return fig
     else:
         fig = go.Figure(
             data = [
