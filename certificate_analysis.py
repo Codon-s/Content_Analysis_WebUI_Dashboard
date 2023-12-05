@@ -1,7 +1,12 @@
+'''Importing Necessary Modules'''
 import pandas as pd
-from data_cleaning import df
-import plotly.graph_objects as go
 import plotly.express as px
+from dash_bootstrap_templates import load_figure_template as load_template
+from data_cleaning import df
+
+## Loading Bootstrap Template "SLATE"
+TEMPLATES = 'slate'
+load_template(TEMPLATES)
 
 df.Certificate.fillna('Unrated', inplace=True)
 
@@ -70,7 +75,8 @@ cert_fig1.update_traces(
 # Figure 2: Frequency of Certificates for Different Categories
 
 def cert_fig2(category):
-
+    '''Function Provides Output of Figure 2, with outlining appropriate
+    pie section based on the category'''
     dt = df[df.Category == category]
     dt.Certificate.value_counts()
     result = pd.DataFrame({
@@ -94,5 +100,5 @@ def cert_fig2(category):
         textposition = 'outside'
     )
 
-    #fig.show()\
+    #fig.show()
     return fig

@@ -1,8 +1,14 @@
-from data_cleaning import df
+'''Importing Necessary Dependencies'''
+from collections import Counter
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from collections import Counter
+from dash_bootstrap_templates import load_figure_template as load_template
+from data_cleaning import df
+
+## Loading Bootstrap Template "SLATE"
+TEMPLATES = 'slate'
+load_template(TEMPLATES)
 
 # Fetching Count of Genre
 genre_counts = {}
@@ -15,7 +21,7 @@ for i in df.Genre:
 
 genre_counts_df = pd.DataFrame(genre_counts.items(), columns=['Genre', 'Count'])
 
-# Figure 1: Genre Counts
+## Figure 1: Genre Counts
 bar_trace = go.Bar(
     x=genre_counts_df['Genre'],
     y=genre_counts_df['Count'],
@@ -50,7 +56,7 @@ genre_fig1 = go.Figure(
 
 #genre_fig1.show()
 
-# Figure 2: Top 5 Genres by Movie Count
+## Figure 2: Top 5 Genres by Movie Count
 
 top_genres = genre_counts_df.sort_values(by='Count', ascending=False).head(10)
 genre_fig2 = px.bar(
@@ -76,18 +82,16 @@ genre_fig2.update_layout(
     margin=dict(l=50, r=50, t=80, b=80),
 )
 
-# Figure 3: Top 5 Common Genre Pairs
+## Figure 3: Top 5 Common Genre Pairs
 
 genre_lists = []
-for genres in df['Genre']: 
+for genres in df['Genre']:
     if len(genres) > 1:
         genre_lists.append(genres)
-        
 genre_counts = []
 for genres in genre_lists:
     a =tuple(genres)
     genre_counts.append(a)
-    
 a = Counter(genre_counts)
 
 b = a.most_common(5)
