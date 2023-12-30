@@ -22,7 +22,7 @@ The analysis presented in an interactive dashboard built using Plotly Dash, with
 
 1. Clone the repository:
 ```bash
-https://github.com/Codon-s/Content_Analysis_WebUI_Dashboard.git
+git clone https://github.com/Codon-s/Content_Analysis_WebUI_Dashboard.git
 ```
 
 2. Install the required dependencies:
